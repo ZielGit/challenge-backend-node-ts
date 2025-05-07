@@ -12,6 +12,6 @@ const productsSchema = new Schema<IProduct>(
   { timestamps: true }
 );
 
-const Accounts = cnxProducts.model<IProduct>("Accounts", productsSchema);
+const Products = cnxProducts.model<IProduct>("Products", productsSchema);
 
-export default Accounts;
+export default Products;
