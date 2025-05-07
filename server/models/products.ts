@@ -8,6 +8,7 @@ const productsSchema = new Schema<IProduct>(
   {
     name: { type: String },
     sku: { type: String },
+    accountId: { type: String, required: true },
   },
   { timestamps: true }
 );
