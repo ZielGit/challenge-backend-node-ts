@@ -29,7 +29,9 @@
     "graphql": "^16.8.1",
     "mongoose": "^8.0.1",
     "punycode": "^2.3.1",
-    "typescript": "^5.3.2"
+    "typescript": "^5.3.2",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
