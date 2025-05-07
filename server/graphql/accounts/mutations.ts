@@ -1,5 +1,6 @@
 import Accounts from "../../models/accounts";
 import { generateMockAccounts } from "./mocks/accounts.mock";
+import { validateEmail } from "../utils/validators";
 
 export const mutations = {
   testAccM: async (_: any) => {
@@ -9,7 +10,9 @@ export const mutations = {
   addAccount: async (_: any, args: { input: { name: string; email: string } }) => {
     try {
       const { name, email } = args.input;
-      
+
+      validateEmail(email);
+
       // Verificar si el email ya existe
       const existingAccount = await Accounts.findOne({ email });
       if (existingAccount) {

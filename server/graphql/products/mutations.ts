@@ -1,11 +1,17 @@
 import Accounts from "../../models/accounts";
 import Products from "../../models/products";
 import { generateMockProducts } from "./mocks/products.mock";
+import { validateObjectId } from "../utils/validators";
 
 export const mutations = {
   addProducts: async (_: any, args: { products: Array<{ name: string; sku: string; accountId: string }> }) => {
     try {
       const { products } = args;
+
+      // Validar IDs de cuenta
+      for (const product of products) {
+        validateObjectId(product.accountId);
+      }
 
       // Verificar que la cuenta exista
       const accountIds = [...new Set(products.map(p => p.accountId))];
@@ -35,6 +41,8 @@ export const mutations = {
   mockCreateProducts: async (_: any, args: { count?: number, accountId: string }) => {
     try {
       const { count = 5, accountId } = args;
+
+      validateObjectId(accountId);
       
       const accountExists = await Accounts.exists({ _id: accountId });
       if (!accountExists) {

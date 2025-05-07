@@ -1,6 +1,9 @@
 import { gql } from "apollo-server-express";
+import { types } from "../root/types";
 
 export const schema = gql`
+  ${types}
+
   type Product {
     _id: ID!
     name: String!
