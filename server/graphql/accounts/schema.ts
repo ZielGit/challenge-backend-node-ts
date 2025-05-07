@@ -33,5 +33,6 @@ export const schema = gql`
   extend type Mutation {
     testAccM: Boolean
     addAccount(input: AccountInput!): Account!
+    mockCreateAccounts(count: Int): [Account!]!
   }
 `;

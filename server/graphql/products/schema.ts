@@ -39,5 +39,6 @@ export const schema = gql`
 
   extend type Mutation {
     addProducts(products: [ProductInput!]!): [Product!]!
+    mockCreateProducts(count: Int, accountId: String!): [Product!]!
   }
 `;
