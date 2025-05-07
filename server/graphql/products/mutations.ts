@@ -1,5 +1,6 @@
 import Accounts from "../../models/accounts";
 import Products from "../../models/products";
+import { generateMockProducts } from "./mocks/products.mock";
 
 export const mutations = {
   addProducts: async (_: any, args: { products: Array<{ name: string; sku: string; accountId: string }> }) => {
@@ -28,6 +29,23 @@ export const mutations = {
     } catch (error) {
       console.error('Error adding products:', error);
       throw error instanceof Error ? error : new Error('Failed to add products');
+    }
+  },
+
+  mockCreateProducts: async (_: any, args: { count?: number, accountId: string }) => {
+    try {
+      const { count = 5, accountId } = args;
+      
+      const accountExists = await Accounts.exists({ _id: accountId });
+      if (!accountExists) {
+        throw new Error('Account does not exist');
+      }
+
+      const mockData = generateMockProducts(count, accountId);
+      return await Products.insertMany(mockData);
+    } catch (error) {
+      console.error('Error creating mock products:', error);
+      throw new Error('Failed to create mock products');
     }
   }
 };
