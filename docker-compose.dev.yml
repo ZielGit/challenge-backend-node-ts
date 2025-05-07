@@ -1,0 +1,36 @@
+services:
+  app:
+    build:
+      context: .
+      target: builder
+    container_name: backend-dev
+    command: npm run dev
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - MONGO_ACCOUNTS_URI=mongodb://mongo-accounts:27017/eiAccounts
+      - MONGO_INVENTORIES_URI=mongodb://mongo-inventories:27017/eiInventories
+    depends_on:
+      - mongo-accounts
+      - mongo-inventories
+    networks:
+      - backend-network
+
+  # Los servicios de mongo son los mismos que en el compose principal
+  mongo-accounts:
+    extends:
+      file: docker-compose.yml
+      service: mongo-accounts
+
+  mongo-inventories:
+    extends:
+      file: docker-compose.yml
+      service: mongo-inventories
+
+networks:
+  backend-network:
+    external: true

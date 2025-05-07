@@ -1,0 +1,61 @@
+services:
+  app:
+    build: .
+    container_name: backend-app
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - MONGO_ACCOUNTS_URI=mongodb://mongo-accounts:27017/eiAccounts
+      - MONGO_INVENTORIES_URI=mongodb://mongo-inventories:27017/eiInventories
+    depends_on:
+      - mongo-accounts
+      - mongo-inventories
+    networks:
+      - backend-network
+
+  mongo-accounts:
+    image: mongo:6.0
+    container_name: mongo-accounts
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-accounts-data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=eiAccounts
+    networks:
+      - backend-network
+
+  mongo-inventories:
+    image: mongo:6.0
+    container_name: mongo-inventories
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-inventories-data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=eiInventories
+    networks:
+      - backend-network
+
+  mongo-express:
+    image: mongo-express:1.0
+    container_name: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo-accounts
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=password
+    depends_on:
+      - mongo-accounts
+    networks:
+      - backend-network
+
+volumes:
+  mongo-accounts-data:
+  mongo-inventories-data:
+
+networks:
+  backend-network:
+    driver: bridge
